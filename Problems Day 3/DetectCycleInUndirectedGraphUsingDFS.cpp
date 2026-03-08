@@ -1,45 +1,23 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Solution
-{
-private:
-    // BFS-based cycle detection for undirected graphs
-    bool detect(int src, vector<vector<int>> &adj, vector<int> &visited)
-    {
-        visited[src] = 1;
-        queue<pair<int, int>> q;  // pair of {node, parent}
-
-        q.push({src, -1});
-
-        while (!q.empty())
-        {
-            int node = q.front().first;
-            int parent = q.front().second;
-            q.pop();
-
-            // Check all adjacent nodes
-            for (auto &adjacentNode : adj[node])
-            {
-                if (!visited[adjacentNode])
-                {
-                    visited[adjacentNode] = 1;
-                    q.push({adjacentNode, node});
-                }
-                // If visited and not parent, cycle exists
-                else if (parent != adjacentNode)
-                    return true;
+class Solution {
+  private:
+    bool detect(int node , int parentnode , vector<vector<int>>&adj , vector<int>&visited) {
+        visited[node] = 1 ; // mark the visit 
+        
+        for(auto &adjacentnode : adj[node]){
+           if(!visited[adjacentnode]) {
+                if(detect(adjacentnode,node,adj,visited))  return true ; 
             }
+            // if already visited and parent node is not adjacent node then cycle                 
+            else if(parentnode != adjacentnode) return true ;
         }
-
-        return false;
+        return false ;
     }
-
 public:
-    // Check if cycle exists in undirected graph
-    bool isCycle(int V, vector<vector<int>> &edges)
-    {
-        vector<int> visited(V, 0);
+    bool isCycle(int V, vector<vector<int>>& edges) {
+         vector<int> visited(V, 0);
 
         // Build adjacency list
         vector<vector<int>> adj(V);
@@ -54,7 +32,7 @@ public:
         {
             if (!visited[i])
             {
-                if (detect(i, adj, visited))
+                if (detect(i,-1, adj, visited)) // 0,-1 , node , parent 
                     return true;
             }
         }
