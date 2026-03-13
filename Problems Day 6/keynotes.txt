@@ -1,0 +1,4 @@
+1. If a graph doesn't contain contain cycle it is a bipartite graph 
+
+2. if(contains a cycle && cycle size is even) == bipartite graph 
+   else not a bipartite graph ; 
